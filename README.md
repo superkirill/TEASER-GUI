@@ -1,8 +1,9 @@
-# TEASER++: fast & certifiable 3D registration 
+# GUI for TEASER++: fast & certifiable 3D registration 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [<img src="https://github.com/MIT-SPARK/TEASER-plusplus/workflows/build/badge.svg">](https://github.com/MIT-SPARK/TEASER-plusplus/actions)
 
-![TEASER++ 3DSmooth](examples/teaser_python_3dsmooth/3dsmooth_example.gif)
+This fork provides a simple GUI for the original TEASER++ project (without PCL dependencies), as well as instructions on how
+to compile TEASER++ for Windows.
 
 TEASER++ is a fast and certifiably-robust point cloud registration library written in C++, with Python and MATLAB bindings.
 
@@ -30,268 +31,37 @@ If you find this library helpful or use it in your projects, please cite:
 
 If you are interested in more works from us, please visit our lab page [here](http://web.mit.edu/sparklab/).
 
-## TL;DR
-### Minimal C++ example
-Run the following script to show a minimal C++ example:
-```shell script
-sudo apt install cmake libeigen3-dev libboost-all-dev
-git clone https://github.com/MIT-SPARK/TEASER-plusplus.git
-cd TEASER-plusplus && mkdir build && cd build
-cmake .. && make
-sudo make install
-cd .. && cd examples/teaser_cpp_ply && mkdir build && cd build
-cmake .. && make
-./teaser_cpp_ply
-```
-You should see terminal output like this:
-```shell script
-	Read 1889 total vertices 
-*** [pmc heuristic: thread 1]   current max clique = 577,  time = 0.00163579 sec
-...
-*** [pmc: thread 2]   current max clique = 602,  time = 0.44515 sec
------------------------------------------------------------------------
-=====================================
-          TEASER++ Results           
-=====================================
-Expected rotation: 
-  0.996927  0.0668736 -0.0406664
- -0.066129   0.997618  0.0194009
- 0.0418676 -0.0166518   0.998978
-Estimated rotation: 
-  0.996658  0.0729647  0.0367288
--0.0740469   0.996832  0.0290182
--0.0344951 -0.0316408   0.998904
-Error (deg): 0.0783556
+## Setup
+### Windows
 
-Expected translation: 
- -0.115577
--0.0387705
-  0.114875
-Estimated translation: 
- -0.116132
--0.0390858
-   0.11729
-Error (m): 0.00249818
+TEASER++ can be compiled on Windows using the MinGW GCC compiler (version 7.3.0 was tested and works). 
 
-Number of correspondences: 1889
-Number of outliers: 1700
-Time taken (s): 0.786677
-```
-### Minimal Python 3 example
-Run the following script to show a minimal Python 3 example (needs Anaconda installed):
-```shell script
-sudo apt install cmake libeigen3-dev libboost-all-dev
-conda create -n teaser_test python=3.6 numpy
-conda activate teaser_test
-conda install -c open3d-admin open3d=0.9.0.0
-git clone https://github.com/MIT-SPARK/TEASER-plusplus.git
-cd TEASER-plusplus && mkdir build && cd build
-cmake -DTEASERPP_PYTHON_VERSION=3.6 .. && make teaserpp_python
-cd python && pip install .
-cd ../.. && cd examples/teaser_python_ply 
-python teaser_python_ply.py
-```
-You should see output similar to this:
-```shell script
-==================================================
-        TEASER++ Python registration example      
-==================================================
-*** [pmc heuristic: thread 1]   current max clique = 563,  time = 0.00185895 sec
-...
-*** [pmc: thread 2]   current max clique = 605,  time = 0.618481 sec
------------------------------------------------------------------------
-=====================================
-          TEASER++ Results           
-=====================================
-Expected rotation: 
-[[ 0.99692656  0.06687358 -0.04066644]
- [-0.06612899  0.99761788  0.01940087]
- [ 0.04186755 -0.01665178  0.99897777]]
-Estimated rotation: 
-[[ 9.96883589e-01  7.88648224e-02 -1.85738207e-03]
- [-7.88858464e-02  9.96487579e-01 -2.80985536e-02]
- [-3.65129272e-04  2.81575081e-02  9.99603432e-01]]
-Error (deg): 
-0.06284342361637997
-Expected translation: 
-[-0.11557694 -0.03877054  0.11487489]
-Estimated translation: 
-[-0.11652176 -0.0373522   0.111885  ]
-Error (m): 
-0.0034414811018018978
-Number of correspondences:  1889
-Number of outliers:  1700
-Time taken (s):  0.9492652416229248
-```
-
-### Reproduce the GIF Above 
-Run the following script:
-```shell script
-sudo apt install cmake libeigen3-dev libboost-all-dev
-conda create -n teaser_3dsmooth python=3.6 numpy
-conda activate teaser_3dsmooth
-conda install -c open3d-admin open3d=0.9.0.0
-conda install scikit-learn 
-git clone https://github.com/MIT-SPARK/TEASER-plusplus.git
-cd TEASER-plusplus && mkdir build && cd build
-cmake -DTEASERPP_PYTHON_VERSION=3.6 .. && make teaserpp_python
-cd python && pip install .
-cd ../.. && cd examples/teaser_python_3dsmooth
-python teaser_python_3dsmooth.py
-```
-You should be able to see Open3D windows showing registration results:
-
-![TEASER++ 3DSmooth](examples/teaser_python_3dsmooth/3dsmooth_example.gif)
-
-## Getting Started
-### Supported Platforms
-TEASER++ has been tested on Ubuntu 18.04 with g++-7/9 and clang++-7/8/9.  
-
-### Installing Dependencies
-Building TEASER++ requires the following libraries installed: 
-1. A compiler that supports OpenMP. See [here](https://www.openmp.org/resources/openmp-compilers-tools/) for a list. 
+Requirements:
+1. MinGW32 GCC == 7.3.0
 2. CMake >= 3.10
 3. Eigen3 >= 3.3
-4. PCL >= 1.9 (optional)
-5. Boost >= 1.58 (optional)
+4. Boost >= 1.58 (optional but highly recommended)
 
-Run the following script to install all required dependencies:
-```shell script
-sudo apt install cmake libeigen3-dev libboost-all-dev
-```
-
-Run the following script to install PCL from source:
-```shell script
-# Compile and install PCL 1.91 from source
-PCL_PACKAGE_DIR="$HOME/pcl"
-mkdir "$PCL_PACKAGE_DIR"
-cd "$PCL_PACKAGE_DIR"
-wget "https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.zip"
-unzip pcl-*.zip
-rm pcl-*.zip
-cd pcl-* && mkdir build && cd build
-cmake ..
-make -j $(python3 -c 'import multiprocessing as mp; print(int(mp.cpu_count() * 1.5))')
-sudo make install
-```
-Notice that PCL is not required for the TEASER++ registration library. Installing it merely allows you to build example tests that uses PCL's FPFH features for registration. 
-
-If you want to build Python bindings, you also need:
-1. Python 2 or 3 (make sure to include the desired interpreter in your `PATH` variable)
-
-If you want to build MATLAB bindings, you also need:
-1. MATLAB 
-2. CMake >= 3.13
-
-TEASER++ uses the Parallel Maximum Clique ([paper](https://arxiv.org/abs/1302.6256), [code](https://github.com/ryanrossi/pmc)) for maximum clique calculation. It will be downloaded automatically during CMake configuration. In addition, CMake will also download Google Test and pybind11 if necessary.
-
-### Compilation and Installation
-Clone the repo to your local directory. Open a terminal in the repo root directory. Run the following commands:
 ```shell
 # Clone the repo
-git clone https://github.com/MIT-SPARK/TEASER-plusplus.git
+git clone https://github.com/superkirill/TEASER-GUI
 
 # Configure and compile
-cd TEASER-plusplus && mkdir build
+cd TEASER-GUI
+mkdir build
+cd build
+cmake -DBUILD_WITH_MARCH_NATIVE=ON -DBUILD_TEASER_FPFH=OFF -DBUILD_PYTHON_BINDINGS=OFF ..
+mingw32-make.exe # Make sure it can be found in the PATH system variable
+```
+
+In order to compile a module used by the GUI:
+```shell
+cd GUI
+mkcd build
 cd build
 cmake ..
-make
-
-# Generate doxygen documentation in doc/
-make doc 
-
-# Run tests
-ctest
-
-# Install shared libraries and headers
-sudo make install
+mingw32-make.exe # Make sure it can be found in the PATH system variable
 ```
 
-### Available CMake Options
-Here are the available CMake options you can turn on/off during configuration:
-
-| Option Name            | Description         | Default Value |
-|------------------------|---------------------|---------------|
-|`BUILD_TESTS`             | Build tests         |  ON           |
-|`BUILD_TEASER_FPFH`       | Build TEASER++ wrappers for PCL FPFH estimation | OFF |
-|`BUILD_MATLAB_BINDINGS`   | Build MATLAB bindings | OFF |
-|`BUILD_PYTHON_BINDINGS`  | Build Python bindings | ON |
-|`BUILD_DOC` | Build documentation   | ON |
-|`BUILD_WITH_MARCH_NATIVE`| Build with flag `march=native` | OFF |
-|`ENABLE_DIAGNOSTIC_PRINT`| Enable printing of diagnostic messages | OFF |
-
-For example, if you want to build with the `march=native` flag (potentially faster at a loss of binary portability), run the following script for compilation:
-```shell script
-cmake -DBUILD_WITH_MARCH_NATIVE=ON ..
-make
-```
-Notice that by default the library is built in release mode. To build with debug symbols enabled, use the following commands:
-```shell script
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make
-```
-
-### Run Tests
-By default, the library is built in release mode. If you instead choose to build it in debug mode, some tests are likely to time out. 
-
-To run tests and benchmarks (for speed & accuracy tests), you can execute the following command:
-```shell
-# Run all tests
-ctest 
-
-# Run benchmarks
-ctest --verbose -R RegistrationBenchmark.*
-```
-The `--verbose` option allows you to see the output, as well as the summary tables generated by each benchmark.
-
-## How to use TEASER++ 
-### In CMake-based C++ Projects
-When installing TEASER++, CMake will export the following targets that can be included in other CMake projects using `find_package()`:
-- `teaserpp::teaser_registration`: the core registration library
-- `teaserpp::teaser_io`: library for importing `.ply` files
-- `teaserpp::teaser_features`: convenience wrappers around the PCL FPFH library, and simple feature matching functions
-
-A minimally-working `CMakeList.txt` looks something like this:
-```cmake
-cmake_minimum_required(VERSION 3.10)
-project(teaserpp_example)
-
-set (CMAKE_CXX_STANDARD 14)
-
-find_package(Eigen3 REQUIRED) 
-find_package(teaserpp REQUIRED)
-
-# Change this line to include your own executable file
-add_executable(cpp_example cpp_example.cpp)
-
-# Link to teaserpp & Eigen3 
-target_link_libraries(cpp_example Eigen3::Eigen teaserpp::teaser_registration teaserpp::teaser_io)
-```
-
-In the `examples/` folder, you can find two C++ examples that can be compiled with CMake:
-- [`teaser_cpp_ply`](/examples/teaser_cpp_ply): showing how to import `.ply` files and perform registration with TEASER++
-- [`teaser_cpp_fpfh`](/examples/teaser_cpp_fpfh): showing how to use TEASER++ with FPFH features
-
-### In Python
-In the `examples/` folder, you can find two C++ examples that can be compiled with CMake:
-- [`teaser_python_ply`](/examples/teaser_python_ply): showing how to import `.ply` files and perform registration with TEASER++ and Open3D
-- [`teaser_python_3dsmooth`](/examples/teaser_python_3dsmooth): showing how to use TEASER++ on descriptors generated by [3DSmoothNet](https://github.com/zgojcic/3DSmoothNet) on the 3DMatch dataset, with Open3D visualization
-
-For a short documentation on how to use the Python bindings for TEASER++, please refer to [this](python/README.md) document.
-
-### In MATLAB
-For a short documentation on how to use the MATLAB bindings for TEASER++, please refer to [this](matlab/README.md) document.
-
-### In ROS
-To use TEASER++ in a ROS environment, simple clone the repo to your catkin workspace.
-
-## Known Issues
-- If you are encountering segmentation faults from PMC, try add the environmental variable `OMP_NUM_THREADS=${MAX_THREADS}` (replace ${MAX_THREADS} with the maximum number of threads available on your machine) in your current shell. You can also just prepend `OMP_NUM_THREADS=${MAX_THREADS}` when running your executable.
-- When using the MATLAB wrapper with MATLAB on terminal (`-nojvm` option enabled), you might encounter errors similar to this:
-`/usr/local/MATLAB/R2019a/bin/glnxa64/MATLAB: symbol lookup error: /opt/intel/compilers_and_libraries_2019.4.243/linux/mkl/lib/intel64_lin/libmkl_vml_avx2.so: undefined symbol: mkl_serv_getenv`. One way to get around this is to run the following command in the environment where you start MATLAB: 
-`export LD_PRELOAD=/opt/intel/mkl/lib/intel64/libmkl_intel_lp64.so:/opt/intel/mkl/lib/intel64/libmkl_gnu_thread.so:/opt/intel/mkl/lib/intel64/libmkl_core.so`. You may need to change the paths according to your MKL installation.
-
-## Other Publications
-Other publications related to TEASER include:
-- [H. Yang](http://hankyang.mit.edu/) and [L. Carlone](http://lucacarlone.mit.edu/), “A quaternion-based certifiably optimal solution to the Wahba problem with outliers,” in Proceedings of the IEEE International Conference on Computer Vision (ICCV), 2019, pp. 1665–1674. ([pdf](https://arxiv.org/pdf/1905.12536.pdf))
-- [H. Yang](http://hankyang.mit.edu/), [P. Antonante](http://www.mit.edu/~antonap/), [V. Tzoumas](https://vasileiostzoumas.com/), and [L. Carlone](http://lucacarlone.mit.edu/), “Graduated Non-Convexity for Robust Spatial Perception: From Non-Minimal Solvers to Global Outlier Rejection,” IEEE Robotics and Automation Letters (RA-L), 2020. ([pdf](https://arxiv.org/pdf/1909.08605))
+Copy libpmc.dll, libteaser.dll, libteaser_registration.dll or libtinyply.dll into TEASER-GUI/GUI, from 
+TEASER-GUI/build/pmc-build, TEASER-GUI/build/teaser and TEASER-GUI/build/libtinyply.

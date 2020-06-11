@@ -30,3 +30,9 @@ TAGS
 /cmake-*
 *.m~
 python/*.egg-info/
+CMake*
+*.dll
+Makefile
+*.pkl
+*.exe
+*.sdv

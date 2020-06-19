@@ -29,7 +29,7 @@
 	"mesh_show_wireframe" : false,
 	"point_color_option" : 8,
 	"point_show_normal" : false,
-	"point_size" : 20,
+	"point_size" : 2,
 	"show_coordinate_frame" : true,
 	"version_major" : 1,
 	"version_minor" : 0

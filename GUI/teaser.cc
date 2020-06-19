@@ -2,7 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <random>
-
+#include <fstream>
 #include <Eigen/Core>
 
 #include <teaser/ply_io.h>
@@ -12,16 +12,26 @@
 int main(int argc, char* argv[]) {
 
   // argv[1:]: "path_to_src_cloud", "path_to_out_cloud", "float_noise_bound", "float.cbar2", "bool_estimate_scaling",
-  //            "int_rotation_max_iterations", "float_rotation_gnc_factor", "float_rotation_cost_threshold"
+  //            "int_rotation_max_iterations", "float_rotation_gnc_factor", "float_rotation_cost_threshold",
+  //            "path_to_correspondences_file"
 
   // Load the .ply file
   teaser::PLYReader reader;
   teaser::PointCloud src_cloud, tgt_cloud;
   auto status = reader.read(argv[1], src_cloud);
   status = reader.read(argv[2], tgt_cloud);
+  std::vector<std::pair<int, int>> correspondences;
+  std::ifstream corr_file(argv[9]);
+
+  int x, y;
+  while(corr_file >> x >> y)
+  {
+      correspondences.push_back(std::make_pair(x, y));
+  }
 
   int N_src = src_cloud.size();
   int N_tgt = tgt_cloud.size();
+
 
   // Convert the point clouds to Eigen
   Eigen::Matrix<double, 3, Eigen::Dynamic> src(3, N_src);
@@ -48,7 +58,7 @@ int main(int argc, char* argv[]) {
   // Solve with TEASER++
   teaser::RobustRegistrationSolver solver(params);
   std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-  solver.solve(src, tgt);
+  solver.solve(src_cloud, tgt_cloud, correspondences);
   std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
   auto solution = solver.getSolution();
